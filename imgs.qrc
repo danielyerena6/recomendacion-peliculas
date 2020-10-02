@@ -1,0 +1,15 @@
+<RCC>
+  <qresource prefix="img">
+    <file>accion2.jpg</file>
+    <file>accion3.jpg</file>
+    <file>accion4.jpg</file>
+    <file>comedia1.jpg</file>
+    <file>comedia2.jpg</file>
+    <file>comedia3.jpg</file>
+    <file>comedia4.jpg</file>
+    <file>drama1.jpg</file>
+    <file>drama2.jpg</file>
+    <file>drama3.jpg</file>
+    <file>drama4.jpg</file>
+  </qresource>
+</RCC>
