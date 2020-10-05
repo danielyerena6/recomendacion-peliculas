@@ -122,7 +122,6 @@ class recomendaciones(QMainWindow):
 
 
 if __name__ == '__main__':
-    print("hola mundo")
     app = QApplication(sys.argv)
     GUI = recomendaciones()
     GUI.show()
