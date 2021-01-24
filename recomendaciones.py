@@ -3,6 +3,7 @@ import webbrowser
 from random import choice,randint
 from PyQt5 import uic
 from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5.QtWidgets import QLabel
 from PyQt5.QtGui import QPixmap
 import pandas as pd
 import random
@@ -21,6 +22,8 @@ class recomendaciones(QMainWindow):
                 self.preferencia.append(int(dato))
 
             f.close()
+            print("Puntos de cada eleccion")
+            print("Comedia, Drama, Accion\n")
             print(self.preferencia)
 
         except:
@@ -36,13 +39,18 @@ class recomendaciones(QMainWindow):
         self.Accion.clicked.connect(self.accion)
         self.Drama.clicked.connect(self.drama)
         self.Comedia.clicked.connect(self.comedia)
+        self.label
+        self.reco.clicked.connect(self.recomendacion)
+        self.opt=1
     
     def accion(self):
-        self.contador(2)
+        self.contador(2,self.opt)
         imgs=[]
         imgs.append(randint(0,3))
         imgs.append(randint(0,3))
         imgs.append(randint(0,3))
+        self.label.setText("Accion")
+
 
         while imgs[0] == imgs[1] or imgs[0] == imgs[2] or imgs[1] == imgs[2]:
             imgs=[]
@@ -62,14 +70,17 @@ class recomendaciones(QMainWindow):
         self.img1.setPixmap(pixmapImagen1)
         self.img2.setPixmap(pixmapImagen2)
         self.img3.setPixmap(pixmapImagen3)
+        self.opt=1
     
     def drama(self):
-        self.contador(1)
+        self.contador(1,self.opt)
 
         imgs=[]
         imgs.append(randint(0,3))
         imgs.append(randint(0,3))
         imgs.append(randint(0,3))
+        self.label.setText("Drama")
+        
 
         while imgs[0] == imgs[1] or imgs[0] == imgs[2] or imgs[1] == imgs[2]:
             imgs=[]
@@ -88,13 +99,16 @@ class recomendaciones(QMainWindow):
         self.img2.setPixmap(pixmapImagen2)
         self.img3.setPixmap(pixmapImagen3)
 
+        self.opt=1
+
     def comedia(self):
-        self.contador(0)
+        self.contador(0,self.opt)
         
         imgs=[]
         imgs.append(randint(0,3))
         imgs.append(randint(0,3))
         imgs.append(randint(0,3))
+        self.label.setText("Comedia")
 
         while imgs[0] == imgs[1] or imgs[0] == imgs[2] or imgs[1] == imgs[2]:
             imgs=[]
@@ -113,33 +127,43 @@ class recomendaciones(QMainWindow):
         self.img3.setPixmap(pixmapImagen3)
 
 
-    def contador(self,n):
-        self.preferencia[n]=self.preferencia[n]+1
-        f = open('vector_preferencia.txt','a')
-        f.write("{},{},{}\n".format(self.preferencia[0],self.preferencia[1],self.preferencia[2]))
-        f.close()
-        print(self.preferencia)
+        self.opt=1
+
+
+    def contador(self,n,opt):
+        if(opt):
+            self.preferencia[n]=self.preferencia[n]+1
+            f = open('vector_preferencia.txt','a')
+            f.write("{},{},{}\n".format(self.preferencia[0],self.preferencia[1],self.preferencia[2]))
+            f.close()
+            print(self.preferencia)
+        else:
+            pass
+
+    def recomendacion(self):
+        self.opt=0
+        if self.preferencia[0]>self.preferencia[1] and self.preferencia[0]>self.preferencia[2]:
+            self.comedia()
+        elif self.preferencia[1]>self.preferencia[0] and GUI.preferencia[1]>self.preferencia[2]:
+            self.drama()
+        elif self.preferencia[2]>self.preferencia[1] and self.preferencia[2]>self.preferencia[0]:
+            self.accion()
+        else:
+            opcion=randint(0,2)
+            if opcion==0:
+                self.comedia()
+            elif opcion==1:
+                pass
+                self.drama()
+            else:
+                self.accion()
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     GUI = recomendaciones()
     GUI.show()
-    if GUI.preferencia[0]>GUI.preferencia[1] and GUI.preferencia[0]>GUI.preferencia[2]:
-        GUI.comedia()
-    elif GUI.preferencia[1]>GUI.preferencia[0] and GUI.preferencia[1]>GUI.preferencia[2]:
-        GUI.drama()
-    elif GUI.preferencia[2]>GUI.preferencia[1] and GUI.preferencia[2]>GUI.preferencia[0]:
-        GUI.accion()
-    else:
-        opcion=randint(0,2)
-        if opcion==0:
-            GUI.comedia()
-        elif opcion==1:
-            pass
-            GUI.drama()
-        else:
-            GUI.accion()
+    GUI.recomendacion()
 
     
     sys.exit(app.exec_())
